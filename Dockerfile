@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 # Install dependency packages
-RUN apk add --update build-base libffi-dev python-dev openssl-dev openssh-client git py-pip
+RUN apk add --update build-base libffi-dev python-dev openssl-dev openssh-client git py-pip sshpass
 
 # Install ansible
 RUN pip install --upgrade pip
