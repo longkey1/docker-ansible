@@ -1,12 +1,23 @@
-FROM alpine:latest
+FROM debian:stable-slim
 
-# Install dependency packages
-RUN apk add --update build-base libffi-dev python-dev openssl-dev openssh-client git py-pip sshpass
+# Fix frontend not set error
+ARG DEBIAN_FRONTEND=noninteractive
 
-# Install ansible
-RUN pip install --upgrade pip
-RUN pip install ansible
+# For ansible add apt-repositry
+RUN echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" >> /etc/apt/sources.list \
+&& apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367 \
+&& apt-get update \
+&& apt-get install -y ansible
 
-# Make ansible playbook directory
-RUN mkdir /.ansible && chmod 777 /.ansible
-RUN mkdir /work && chmod 777 /work
+# Install packages
+RUN apt-get -y update && apt-get install -y \
+ansible \
+gosu
+
+# Set workspace
+RUN mkdir /work
+
+# Set Entrypoint
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
