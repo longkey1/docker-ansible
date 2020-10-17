@@ -16,8 +16,9 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Install ansible
-RUN apt-get -y install curl python
-RUN cd /tmp && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-RUN cd /tmp && python get-pip.py
-RUN pip install ansible
+# https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-debian
+RUN echo 'deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main' > /etc/apt/sources.list.d/ansible
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+RUN apt update
+RUN apt install ansible
 RUN ansible --version
