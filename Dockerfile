@@ -17,8 +17,8 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Install ansible
 # https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-debian
+RUN apt-get -y install gnupg
 RUN echo 'deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main' > /etc/apt/sources.list.d/ansible
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
-RUN apt update
-RUN apt install ansible
+RUN apt-get -y update && apt-get -y install ansible
 RUN ansible --version
