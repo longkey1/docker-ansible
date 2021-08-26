@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 
-repo := debian
-tags := latest stable stable-slim
+repo := ubuntu
+tags := latest
 
 define build_git_branch
 	git checkout master

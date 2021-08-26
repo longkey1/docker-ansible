@@ -1,10 +1,13 @@
-FROM debian:latest
+FROM ubuntu:latest
 
 # Fix frontend not set error
 ARG DEBIAN_FRONTEND=noninteractive
 
+# Update apt packages
+RUN apt -y update
+
 # Install gosu
-RUN apt-get -y update && apt-get -y install gosu
+RUN apt -y install gosu
 
 # Make working directory
 ENV WORK_DIR=/work
@@ -16,9 +19,10 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Install ansible
-# https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-debian
-RUN apt-get -y install gnupg
-RUN echo 'deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main' > /etc/apt/sources.list.d/ansible
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
-RUN apt-get -y update && apt-get -y install ansible openssh-client python-apt
+# https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-ubuntu
+RUN apt -y install software-properties-common
+RUN add-apt-repository --yes --update ppa:ansible/ansible
+RUN apt -y install ansible
+
+# Confirm ansible version
 RUN ansible --version
