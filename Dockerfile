@@ -20,16 +20,16 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Install ansible
 # https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-ubuntu
-RUN apt -y install software-properties-common
+RUN apt-get -y install software-properties-common
 RUN add-apt-repository --yes --update ppa:ansible/ansible
-RUN apt -y install ansible
+RUN apt-get -y install ansible
 
 # Confirm ansible version
 RUN ansible --version
 
 # Install community.general collection
 # https://github.com/ansible-collections/community.digitalocean/issues/132#issuecomment-934355414
-RUN pip install -Iv 'resolvelib<0.6.0'
+RUN apt-get -y install python-resolvelib
 RUN ansible-galaxy collection install community.general
 
 # Confirm collection list
