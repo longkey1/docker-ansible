@@ -1,4 +1,6 @@
-FROM ubuntu:latest
+# https://github.com/ansible-collections/community.digitalocean/issues/132#issuecomment-934355414
+# https://packages.ubuntu.com/search?keywords=python3-resolvelib
+FROM ubuntu:focal
 
 # Fix frontend not set error
 ARG DEBIAN_FRONTEND=noninteractive
@@ -28,8 +30,6 @@ RUN apt-get -y install ansible
 RUN ansible --version
 
 # Install community.general collection
-# https://github.com/ansible-collections/community.digitalocean/issues/132#issuecomment-934355414
-RUN apt-get -y install python-resolvelib
 RUN ansible-galaxy collection install community.general
 
 # Confirm collection list
