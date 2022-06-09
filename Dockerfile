@@ -28,6 +28,8 @@ RUN apt -y install ansible
 RUN ansible --version
 
 # Install community.general collection
+# https://github.com/ansible-collections/community.digitalocean/issues/132#issuecomment-934355414
+RUN pip install -Iv 'resolvelib<0.6.0'
 RUN ansible-galaxy collection install community.general
 
 # Confirm collection list
