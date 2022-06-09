@@ -4,10 +4,10 @@ FROM ubuntu:latest
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Update apt packages
-RUN apt -y update
+RUN apt-get -y update
 
 # Install gosu
-RUN apt -y install gosu
+RUN apt-get -y install gosu
 
 # Make working directory
 ENV WORK_DIR=/work
@@ -26,3 +26,9 @@ RUN apt -y install ansible
 
 # Confirm ansible version
 RUN ansible --version
+
+# Install community.general collection
+RUN ansible-galaxy collection install community.general
+
+# Confirm collection list
+RUN ansible-galaxy collection list
