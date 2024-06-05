@@ -14,8 +14,7 @@ jobs:
       contents: write
     steps:
       - name: Set timezone
-        run: |
-          echo "TZ=Asia/Tokyo" >> ${GITHUB_ENV}
+        run: echo "TZ=Asia/Tokyo" >> ${GITHUB_ENV}
 
       - name: Checkout
         uses: actions/checkout@v2
