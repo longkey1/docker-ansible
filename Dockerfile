@@ -32,5 +32,8 @@ RUN ansible --version
 # Install community.general collection
 RUN ansible-galaxy collection install community.general
 
+# Install ansible.posix collection
+RUN ansible-galaxy collection install ansible.posix
+
 # Confirm collection list
 RUN ansible-galaxy collection list
