@@ -33,7 +33,7 @@ RUN ansible-galaxy collection install ansible.posix
 RUN ansible-galaxy collection list
 
 # Install cloudflared
-RUN apt-get install wget
+RUN apt-get -y install wget
 RUN wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb -o /tmp/cloudflared-linux-amd64.deb
 RUN apt-get -y install /tmp/cloudflared-linux-amd64.deb
 RUN cloudflared version
