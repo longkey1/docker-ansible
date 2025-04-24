@@ -31,8 +31,9 @@ RUN ansible-galaxy collection install ansible.posix
 RUN ansible-galaxy collection list
 
 # Install cloudflared
-RUN apt-get -y install wget
-RUN wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb -o /tmp/cloudflared-linux-amd64.deb
-RUN dpkg -i /tmp/cloudflared-linux-amd64.deb || true
-RUN apt-get -y -f install
+# https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/local-management/create-local-tunnel/
+RUN mkdir -p --mode=0755 /usr/share/keyrings
+RUN curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg | tee /usr/share/keyrings/cloudflare-main.gpg >/dev/null
+RUN echo "deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared any main" | tee /etc/apt/sources.list.d/cloudflared.list
+RUN apt-get update && sudo apt-get install cloudflared
 RUN cloudflared version
