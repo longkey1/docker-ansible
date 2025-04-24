@@ -25,20 +25,15 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 RUN apt-get -y install software-properties-common
 RUN add-apt-repository --yes --update ppa:ansible/ansible
 RUN apt-get -y install ansible
-
-# Confirm ansible version
 RUN ansible --version
 
-# Install community.general collection
+# Install collections - community.general, ansible.posix
 RUN ansible-galaxy collection install community.general
-
-# Install ansible.posix collection
 RUN ansible-galaxy collection install ansible.posix
-
-# Confirm collection list
 RUN ansible-galaxy collection list
 
-# Install
+# Install cloudflared
+RUN apt-get install wget
 RUN wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb -o /tmp/cloudflared-linux-amd64.deb
 RUN apt-get -y install /tmp/cloudflared-linux-amd64.deb
-
+RUN cloudflared version
