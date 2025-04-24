@@ -1,6 +1,4 @@
-# https://github.com/ansible-collections/community.digitalocean/issues/132#issuecomment-934355414
-# https://packages.ubuntu.com/search?keywords=python3-resolvelib
-FROM ubuntu:focal
+FROM ubuntu:latest
 
 # Fix frontend not set error
 ARG DEBIAN_FRONTEND=noninteractive
