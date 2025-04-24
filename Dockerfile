@@ -31,6 +31,7 @@ RUN ansible-galaxy collection install ansible.posix
 RUN ansible-galaxy collection list
 
 # Install cloudflared
+RUN apt-get update && apt-get install -y curl gnupg
 RUN curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg | gpg --dearmor -o /usr/share/keyrings/cloudflare-main.gpg
 RUN echo "deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared any main" > /etc/apt/sources.list.d/cloudflared.list
 RUN apt-get update && apt-get install -y cloudflared
