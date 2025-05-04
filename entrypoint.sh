@@ -1,27 +1,19 @@
 #!/bin/bash
-set -e
 
-# Add local user: workrer
-# Either use the LOCAL_USER_ID if passed in at runtime or
-# fallback
-USER_ID=${LOCAL_USER_ID:-9001}
-GROUP_ID=${LOCAL_GROUP_ID:-9001}
+USER_ID=${LOCAL_UID:-9001}
+GROUP_ID=${LOCAL_GID:-9001}
 QUIET_MSG=${QUIET_MSG:-FALSE}
 
-getent group worker > /dev/null 2>&1 || groupadd -g $GROUP_ID worker
-id -u worker > /dev/null 2>&1 || useradd --shell /bin/bash -u $USER_ID -g $GROUP_ID -o -c "" -m worker
-
-LOCAL_UID=$(id -u worker)
-LOCAL_GID=$(getent group worker | cut -d ":" -f 3)
-
-if [ ! "$USER_ID" == "$LOCAL_UID" ] || [ ! "$GROUP_ID" == "$LOCAL_GID" ]; then
-    echo "Warning: User with differing UID "$LOCAL_UID"/GID "$LOCAL_GID" already exists, most likely this container was started before with a different UID/GID. Re-create it to change UID/GID."
-fi
-
 if [ "${QUIET_MSG}" = "FALSE" ]; then
-  echo "Starting with UID/GID : "$(id -u worker)"/"$(getent group worker | cut -d ":" -f 3)
+  echo "Starting with UID : ${USER_ID}, GID: ${GROUP_ID}"
+  useradd -u ${USER_ID} -o -d ${WORK_DIR} worker
+  groupmod -g ${GROUP_ID} worker
+else
+  useradd -u ${USER_ID} -o -d ${WORK_DIR} worker > /dev/null 2>&1
+  groupmod -g ${GROUP_ID} worker > /dev/null 2>&1
 fi
-
 export HOME=/work
+
+chown worker:worker ${WORK_DIR}
 
 exec /usr/sbin/gosu worker "$@"
