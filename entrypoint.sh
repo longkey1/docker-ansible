@@ -1,14 +1,14 @@
 #!/bin/bash
 set -e
 
-# Add local user
+# Add local user: workrer
 # Either use the LOCAL_USER_ID if passed in at runtime or
 # fallback
 USER_ID=${LOCAL_USER_ID:-9001}
 GROUP_ID=${LOCAL_GOURP_ID:-9001}
 QUIET_MSG=${QUIET_MSG:-FALSE}
 
-getent group user > /dev/null 2>&1 || groupadd -g $GROUP_ID worker
+getent group worker > /dev/null 2>&1 || groupadd -g $GROUP_ID worker
 id -u worker > /dev/null 2>&1 || useradd --shell /bin/bash -u $USER_ID -g $GROUP_ID -o -c "" -m worker
 
 LOCAL_UID=$(id -u worker)
@@ -19,7 +19,7 @@ if [ ! "$USER_ID" == "$LOCAL_UID" ] || [ ! "$GROUP_ID" == "$LOCAL_GID" ]; then
 fi
 
 if [ "${QUIET_MSG}" = "FALSE" ]; then
-  echo "Starting with UID/GID : "$(id -u user)"/"$(getent group user | cut -d ":" -f 3)
+  echo "Starting with UID/GID : "$(id -u worker)"/"$(getent group worker | cut -d ":" -f 3)
 fi
 
 export HOME=/work
