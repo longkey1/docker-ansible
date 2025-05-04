@@ -5,7 +5,7 @@ set -e
 # Either use the LOCAL_USER_ID if passed in at runtime or
 # fallback
 USER_ID=${LOCAL_USER_ID:-9001}
-GROUP_ID=${LOCAL_GOURP_ID:-9001}
+GROUP_ID=${LOCAL_GROUP_ID:-9001}
 QUIET_MSG=${QUIET_MSG:-FALSE}
 
 getent group worker > /dev/null 2>&1 || groupadd -g $GROUP_ID worker
