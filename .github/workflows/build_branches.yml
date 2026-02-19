@@ -5,7 +5,7 @@ on:
     branches:
       - master
   schedule:
-    - cron: '0 15 4 * *' # JST="0 0 5 * *"
+    - cron: '0 15 * * 6' # JST="0 0 * * 7"
 
 jobs:
   make_branches:
@@ -17,13 +17,19 @@ jobs:
         run: echo "TZ=Asia/Tokyo" >> ${GITHUB_ENV}
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set updated date
         run: echo "UPDATED=$(date --iso-8601=seconds)" >> ${GITHUB_ENV}
 
       - name: Update README
         run: envsubst '${UPDATED}' < README.md.dist > README.md
+
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
 
       - name: Setup git
         run: |
@@ -35,12 +41,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "docs: update README by auto commit"
-
-      - uses: actions/create-github-app-token@v1
-        id: app-token
-        with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ secrets.PRIVATE_KEY }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Checkout again
         uses: actions/checkout@v4
